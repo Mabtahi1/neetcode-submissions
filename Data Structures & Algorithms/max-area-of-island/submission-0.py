@@ -1,0 +1,24 @@
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        ROWS, COLS = len(grid), len(grid[0])
+        islands = 0
+        max_area = 0
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] == 1:
+                    islands += 1
+                    q = deque([(r, c)])
+                    grid[r][c] = 0          # mark the start before exploring
+                    area = 1
+                    while q:
+                        row, col = q.popleft()
+                        for dr, dc in directions:
+                            nr, nc = row + dr, col + dc
+                            if (0 <= nr < ROWS and 0 <= nc < COLS and
+                                grid[nr][nc] == 1):
+                                q.append((nr, nc))
+                                grid[nr][nc] = 0
+                                area += 1
+                    max_area = max(max_area,area)
+        return max_area
